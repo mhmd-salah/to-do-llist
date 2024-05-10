@@ -1,106 +1,109 @@
-let input = document.querySelector( ".input" );
-let submit = document.querySelector( ".add" );
-let tasksDiv = document.querySelector( ".tasks" );
+let log = console.log;
 
-//empty array to store the tasks 
+let input = document.querySelector( ".form .input" );
+let addTask = document.querySelector( ".form .add" );
+let divTasks = document.querySelector(".tasks")
+  
+  
 let arrayOfTasks = [];
-//----trigger function get data from local storage
-getDataFromLocalStorage()
 
 if ( window.localStorage.getItem( "tasks" ) )
 {
   arrayOfTasks = JSON.parse(window.localStorage.getItem("tasks"))
-} 
+}
+getDataFromLocalStorage()
 
-// check if input is empty  ----> [1]
-submit.addEventListener( "click", () =>
+addTask.addEventListener( "click", () =>
 {
-  if ( input.value !== "" )
+  if ( input.value != "" )
   {
-    addTaskToArry( input.value ); // add current task to array of tasks
-    input.value = "" // reset input field
+    addTaskToArray( input.value );
+    // empty input
+    input.value = "";
   }
 } );
 
-//click on on task element 
-tasksDiv.addEventListener( "click", ( e ) =>
+divTasks.addEventListener( "click", ( e ) =>
 {
+  if ( e.target.classList.contains( "task" ) )
+  {
+    toggleStateTask( e.target.getAttribute("data-id") )
+    log(e.target.getAttribute("data-id"))
+    e.target.classList.toggle("done")
+  }
   if ( e.target.classList.contains( "del" ) )
   {
-    //remove task from local storage 
-    deletTaskWith(e.target.parentElement.getAttribute("data-id"))
-    //remove element from page
+    deleteTaskWith(e.target.parentElement.getAttribute("data-id"))
     e.target.parentElement.remove()
   }
 })
 
-
-
-//  add tasks to array from task text input
-function addTaskToArry ( taskText )
+function addTaskToArray ( taskText )
 {
   const task = {
     id: Date.now(),
     title: taskText,
     completed: false,
-  }
-  arrayOfTasks.push(task)
-  //add tasks for page
+  };
+  arrayOfTasks.push( task );
   addElementToPageFrom( arrayOfTasks )
-  //add tasks to local storage
-  addDataToLocalStorageFrom( arrayOfTasks )
+  addTaskToLocalStorageFrom(arrayOfTasks)
 }
 
-
-//---------------------------- add element to page from array of tasks
 function addElementToPageFrom ( arrayOfTasks )
 {
-  //empty the tasks div
-  tasksDiv.innerHTML = "";
-  //looping on arry of tasks
-  arrayOfTasks.forEach( ( task ) =>
-  {
+  divTasks.innerHTML = ""
+  arrayOfTasks.forEach(task => {
     let div = document.createElement( "div" )
-    div.className = "task"
-    //check if task is done
+    div.setAttribute("data-id", task.id)
+    div.className = "task";
+    div.appendChild(document.createTextNode(task.title))
     if ( task.completed )
     {
-      div.className="task done"
+      div.className = "task done"
     }
-    div.setAttribute( "data-id", task.id )
-    div.appendChild(document.createTextNode(task.title))
-    let span = document.createElement("span")
-    span.className = "del";
-    span.appendChild(document.createTextNode("delete"))
-    div.appendChild(span)
-    tasksDiv.appendChild( div )
-  })
+    let del = document.createElement( "span" )
+    del.className = "del"
+    del.appendChild(document.createTextNode("delete"))
+    div.appendChild(del)
+    divTasks.appendChild( div )
+  });
+  
 }
 
 
-//------------------------
-function addDataToLocalStorageFrom ( arrayOfTasks )
+
+
+function getDataFromLocalStorage ()
 {
-  window.localStorage.setItem("tasks", JSON.stringify(arrayOfTasks))
-}
-//-------------------------
-
-
-
-
-function getDataFromLocalStorage () // get data from local storage
-{
-  let data = window.localStorage.getItem("tasks")
+  let data = window.localStorage.getItem( "tasks" )
   if ( data )
   {
-    let tasks = JSON.parse(data)
+    let tasks = JSON.parse( data )
     addElementToPageFrom(tasks)
   }
 }
 
+function addTaskToLocalStorageFrom ( arrayOfTasks )
+{
+  window.localStorage.setItem("tasks", JSON.stringify(arrayOfTasks))
+}
 
-function deletTaskWith ( taskId )
+
+function toggleStateTask ( taskId )
+{
+  for ( let i = 0 ; i < arrayOfTasks.length; i++ )
+  {
+    if ( arrayOfTasks[ i ].id == taskId )
+    {
+      arrayOfTasks[i].completed == false ? (arrayOfTasks[i].completed = true) : (arrayOfTasks[i].completed = false)
+    }
+  }
+  addTaskToLocalStorageFrom(arrayOfTasks)
+}
+
+function deleteTaskWith ( taskId )
 {
   arrayOfTasks = arrayOfTasks.filter( ( task ) => task.id != taskId )
-  addDataToLocalStorageFrom(arrayOfTasks)
+  addTaskToLocalStorageFrom(arrayOfTasks)
 }
