@@ -1,12 +1,14 @@
-:root{
-  --main-color:rgb(38, 136, 172);
+:root {
+  --main-color: rgb(38, 136, 172);
 }
-*{
+
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-body{
+
+body {
   font-family: sans-serif;
   min-height: 100vh;
   display: flex;
@@ -14,20 +16,24 @@ body{
   align-items: center;
   padding-top: 40px;
 }
-.form{
+
+.form {
   background: #f9f9f9;
   padding: 20px;
   border-radius: 4px;
   width: 500px;
   position: relative;
 }
+
 .form .input {
   padding: 10px 14px;
-  width: 100%; 
+  width: 100%;
   border: 1px solid var(--main-color);
   outline: none;
   font-size: 20px;
+  color: var(--main-color);
 }
+
 .form .add {
   position: absolute;
   right: 30px;
@@ -40,38 +46,44 @@ body{
   font-weight: bold;
   border-radius: 4px;
 }
-      .tasks {
-        background-color: #f9f9f9;
-        margin-top: 20px;
-        border-radius: 6px;
-        padding: 20px;
-      }
-      .tasks .task {
-        background-color: white;
-        padding: 10px;
-        border-radius: 6px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: 0.3s;
-        cursor: pointer;
-        border: 1px solid #ccc;
-      }
-      .tasks .task:not(:last-child) {
-        margin-bottom: 15px;
-      }
-      .tasks .task:hover {
-        background-color: #f7f7f7;
-      }
-      .tasks .task.done {
-        opacity: 0.5;
-      }
-      .tasks .task span {
-        font-weight: bold;
-        font-size: 10px;
-        background-color: red;
-        color: white;
-        padding: 2px 6px;
-        border-radius: 4px;
-        cursor: pointer;
-      }
+
+.tasks {
+  background-color: #f9f9f9;
+  margin-top: 20px;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.tasks .task {
+  background-color: white;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.tasks .task:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.tasks .task:hover {
+  background-color: #f7f7f7;
+}
+
+.tasks .task.done {
+  opacity: 0.5;
+}
+
+.tasks .task span {
+  font-weight: bold;
+  font-size: 10px;
+  background-color: red;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
